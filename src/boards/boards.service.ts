@@ -24,4 +24,8 @@ export class BoardsService {
     this.boards.push(board);
     return board; // 생성된 board를 반환
   }
+
+  getBoardById(id: string): Board {
+    return this.boards.find(board => board.id === id);
+  }
 }
