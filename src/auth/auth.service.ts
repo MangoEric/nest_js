@@ -32,4 +32,15 @@ export class AuthService {
       }
     }
   }
+
+  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<string> {
+    const { username, password } = authCredentialsDto;
+    const user = await this.userRepository.findOne({ where: { username }});
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      return 'Success';
+    } else {
+      throw new ConflictException('Login failed');
+    }
+  }
 }
