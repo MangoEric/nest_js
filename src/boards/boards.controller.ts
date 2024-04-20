@@ -27,21 +27,28 @@ export class BoardsController {
       return this.boardsService.createBoard(createBoardDto, user);
   }
 
-  @Get('/:id')
+  @Get('/id/:id')
   getBoardById(@Param('id', ParseIntPipe) id: number): Promise<Board> {
     return this.boardsService.getBoardById(id);
   }
 
-  @Delete('/:id')
+  @Delete('/id/:id')
   deleteBoard(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.boardsService.deleteBoard(id);
   }
 
-  @Patch('/:id/status')
+  @Patch('/id/:id/status')
   updateBoardStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body('status', BoardStatusValidationPipe) status: BoardStatus
   ): Promise<Board> {
     return this.boardsService.updateBoardStatus(id, status);
+  }
+
+  @Get('/my')
+  getMyBoards(
+    @GetUser() user: User
+  ): Promise<Board[]> {
+    return this.boardsService.getMyBoards(user);
   }
 }

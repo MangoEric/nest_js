@@ -42,6 +42,7 @@ export class BoardsService {
 
     return found;
   }
+
   async deleteBoard(id: number): Promise<void> {
     const result = await this.boardRepository.delete(id);
     if(result.affected === 0) {
@@ -54,5 +55,12 @@ export class BoardsService {
     board.status = status;
     await this.boardRepository.save(board);
     return board;
+  }
+
+  async getMyBoards(user: User): Promise<Board[]> {
+    const query = this.boardRepository.createQueryBuilder('board');
+    query.where('board.userId = :userId', { userId: user.id });
+    const boards = await query.getMany();
+    return boards;
   }
 }
